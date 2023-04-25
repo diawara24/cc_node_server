@@ -32,7 +32,10 @@ exports.login = async (req, res) => {
                     }, 
                     SECRET_KEY
                 );
-                res.status(200).json(token); 
+                res.status(200).json({
+                    user: user,
+                    token: token
+                }); 
             }else {
                 return res.status(403).json('bad credentials');
             }
