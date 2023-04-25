@@ -23,16 +23,16 @@ exports.login = async (req, res) => {
             }
         });
         if (user) {
-            const isLoggedIn = await  bcrypt.compare(req.body.password, user.password);
+            const isLoggedIn = await bcrypt.compare(req.body.password, user.password);
             if (isLoggedIn) {
                 const token =  jwt.sign(
                     {
-                        user:  user
+                        id:  user.id,
+                        email: user.email
                     }, 
                     SECRET_KEY
                 );
-                res.header('Authorization', 'Bearer ' + token);
-                res.status(200).json(user); 
+                res.status(200).json(token); 
             }else {
                 return res.status(403).json('bad credentials');
             }
