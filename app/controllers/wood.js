@@ -4,8 +4,7 @@ exports.getWoodTypes = async (req, res) => {
     const woodtypes = await Wood.findAll({
         attributes: ['type']
     });
-    res.status(200);
-    res.send(woodtypes);
+    res.status(200).json(woodtypes);
 }
 
 exports.findByHardness = async (req, res) => {
@@ -13,36 +12,29 @@ exports.findByHardness = async (req, res) => {
         const woods = await Wood.findAll({
             where: { hardness: req.params.hardness }
         });
-        res.status(200);
-        res.send(woods);
+        res.status(200).json(woods);
     } catch (error) {
-        res.status(400);
-        res.send(error);
+        res.status(400).json(error);
     }
 }
 
 exports.getWoods = (req, res) => {
-    res.status(200);
-    res.send('List of wood');
+    res.status(200).json('List of wood');
 }
 
 exports.getWood = (req, res) => {
-    res.status(200);
-    res.send(`get wood id=${req.params.id}`);
+    res.status(200).json(`get wood id=${req.params.id}`);
 }
 
 
 exports.addWood = (req, res) => {
-    res.status(200);
-    res.send('add wood');
+    res.status(200).json('add wood');
 }
 
 exports.updateWood = (req, res) => {
-    res.status(200);
-    res.send(`update wood id=${req.params.id}`);
+    res.status(200).json(`update wood id=${req.params.id}`);
 }
 
 exports.deleteWood = (req, res) => {
-    res.status(200);
-    res.send(`delete wood id=${req.params.id}`);
+    res.status(200).json(`delete wood id=${req.params.id}`);
 }

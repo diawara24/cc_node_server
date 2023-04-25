@@ -3,23 +3,14 @@ const bcrypt = require('bcrypt');
 
 exports.signup = async (req, res) => {
     try {
-        req.body.password = await hashPassword(req.body.password);
+        req.body.password = await bcrypt.hash(req.body.password, 10);
         const user = await User.create(req.body);
-        res.status(200);
-        res.send(user);
+        res.status(201).json(user);
     } catch (error) {
-        res.status(400);
-        res.send(error);
-    }
-        
+        res.status(400).json(error);
+    }      
 }
 
 exports.login = (req, res) => {
-    res.status(200);
-    res.send('You are loged in');
-}
-
-async function hashPassword(original_password){
-    const hashedPass = await bcrypt.hash(original_password, 10);
-    return hashedPass; 
+    res.status(200).json('You are loged in');
 }
