@@ -1,5 +1,8 @@
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+const SECRET_KEY = process.env.SECRET_KEY
 
 exports.signup = async (req, res) => {
     try {
@@ -11,6 +14,33 @@ exports.signup = async (req, res) => {
     }      
 }
 
-exports.login = (req, res) => {
-    res.status(200).json('You are loged in');
+exports.login = async (req, res) => {
+    try {
+        
+        const user = await User.findOne({
+            where: {
+                email: req.body.email
+            }
+        });
+        if (user) {
+            const isLoggedIn = await  bcrypt.compare(req.body.password, user.password);
+            if (isLoggedIn) {
+                const token =  jwt.sign(
+                    {
+                        user:  user
+                    }, 
+                    SECRET_KEY
+                );
+                res.header('Authorization', 'Bearer ' + token);
+                res.status(200).json(user); 
+            }else {
+                return res.status(403).json('bad credentials');
+            }
+        }else {
+            return res.status(404).json('user_not_found');
+        }
+    } catch (error) {
+        res.status(400).json(error); 
+    }
+   
 }
