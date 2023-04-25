@@ -1,24 +1,15 @@
 const express = require('express');
 const router = express();
+const woodCtrl = require('../controllers/wood.js');
 
-router.get('/all', function (req, res) {
-    res.send('List of wood');
-});
+router.get('/all', woodCtrl.getWoods);
 
-router.get('/:id', function (req, res) {
-    res.send(`get wood id=${req.params.id}`);
-});
+router.get('/:id', woodCtrl.getWood);
 
-router.post('/', function (req, res) {
-    res.send('add wood');
-});
+router.post('/', woodCtrl.addWood);
 
-router.put('/:id', function (req, res) {
-    res.send(`update wood id=${req.params.id}`);
-});
+router.put('/:id', woodCtrl.updateWood);
 
-router.delete('/:id', function (req, res) {
-    res.send(`delete wood id=${req.params.id}`);
-});
+router.delete('/:id', woodCtrl.deleteWood);
 
 module.exports = router;

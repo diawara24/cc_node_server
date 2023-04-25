@@ -17,24 +17,32 @@ module.exports = (sequelize, DataTypes) => {
     firstName: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: "le prenom ne doit pas etre null"
+      validate: {
+        notNull: { msg: "le prenom ne doit pas etre null"}
+      }
     },
     lastName:{
       type: DataTypes.STRING,
       allowNull: false,
-      validate: "le nom ne doit pas etre null"
+      validate: {
+        notNull: {msg: "le nom ne doit pas etre null"}
+      }
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
       primaryKey: true,
-      validate: "Votre email ne doit pas etre null"
+      validate: {
+        notNull: {msg: "Votre email ne doit pas etre null"}
+      }
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: "Votre mot de passe ne doit pas etre null"
+      validate: {
+        notNull: {msg:"Votre mot de passe ne doit pas etre null"}
+      }
     }
   }, {
     sequelize,
