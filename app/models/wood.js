@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     hardness: {
       type: DataTypes.ENUM("tender", "medium-hard", "hard"), 
+    },
+    image: {
+      allowNull: true,
+      type: DataTypes.STRING
     }
   }, {
     sequelize,
