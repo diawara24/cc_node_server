@@ -1,10 +1,14 @@
-require('dotenv').config()
-const app = require('./app.js')
-
+require('dotenv').config();
+const app = require('./app.js');
+const cors = require('cors');
 
 const host = process.env.HOST;
 const port = process.env.PORT;
 
+app.use(cors({
+    origin: 'http://localhost:8080',
+    optionsSuccessStatus: 200
+}));
 
 
 app.get('', (req, res) => {

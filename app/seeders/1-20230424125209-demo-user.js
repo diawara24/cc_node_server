@@ -1,5 +1,6 @@
 'use strict';
 const bcrypt = require('bcrypt');
+var CryptoJS = require("crypto-js");
 
 
 /** @type {import('sequelize-cli').Migration} */
@@ -10,7 +11,7 @@ module.exports = {
     await queryInterface.bulkInsert('Users', [{
       firstname: 'John',
       lastname: 'Doe',
-      email: "john.doe@mail.com",
+      email: CryptoJS.AES.encrypt("john.doe@mail.com", 'secret key 123').toString(),
       password: hashedPass 
     }], {});
   },
