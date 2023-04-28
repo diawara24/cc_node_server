@@ -40,7 +40,7 @@ const userCtrl = require('../controllers/user.js');
  * @swagger
  * components:
  *   schemas:
- *     Erorr:
+ *     Error:
  *       type: object
  *       properties:
  *         errors:
@@ -81,6 +81,12 @@ const userCtrl = require('../controllers/user.js');
   *           application/json:
   *             schema:
   *               $ref: '#/components/schemas/Error'
+  *       409:
+  *        description: User exist by email address
+  *        content:
+  *           application/json:
+  *             schema:
+  *               type: object
   */
 router.post('/signup', userCtrl.signup);
 

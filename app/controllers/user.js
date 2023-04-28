@@ -1,23 +1,29 @@
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-var CryptoJS = require("crypto-js");
+const {encrypt, decrypt} = require('../utils/crypto.js')
+
 
 const SECRET_KEY = process.env.SECRET_KEY
-const key = CryptoJS.enc.Hex.parse("000102030405060708090a0b0c0d0e0f");
-const iv = CryptoJS.enc.Hex.parse("101112131415161718191a1b1c1d1e1f");
+
 
 exports.signup = async (req, res) => {
     try {
         const value = {
             ...req.body
         };
-        
-        value.email = CryptoJS.AES.encrypt(req.body.email, key, { iv: iv }).toString();
+        value.email = await encrypt(value.email);
+        const currentUser = await User.findOne({
+            where: { email: value.email }
+        })
+        if (currentUser) {
+            res.status(409).json('user already exist: please login or change your email address !');
+            return;
+        }
         value.password = await bcrypt.hash(req.body.password, 10);
         const user = await User.create(value);
-        const bytes  = CryptoJS.AES.decrypt(user.email, key, {iv: iv});
-        user.email = bytes.toString(CryptoJS.enc.Utf8);
+        user.email = await decrypt(user.email);
+        
         res.status(201).json(user);
     } catch (error) {
         res.status(500).json(error);
@@ -26,7 +32,7 @@ exports.signup = async (req, res) => {
 
 exports.login = async (req, res) => {
     try {
-        const email = CryptoJS.AES.encrypt(req.body.email, key, { iv: iv }).toString();
+        const email = await encrypt(req.body.email);
         const user = await User.findOne({
             where: {
                 email: email
@@ -42,6 +48,8 @@ exports.login = async (req, res) => {
                     },
                     SECRET_KEY
                 );
+                user.email = await decrypt(user.email);
+                console.log(user.email, await decrypt(user.email));
                 res.status(200).json({
                     user: user,
                     token: token

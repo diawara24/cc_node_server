@@ -4,11 +4,15 @@ const router = require("./app/routes/index.js");
 const path = require('path');
 const app = express();
 
-const swaggerJsdoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
+// for secure api
+const helmet = require("helmet");
+app.use(helmet());
 
 const hateoasLinker = require('express-hateoas-links');
 app.use(hateoasLinker);
+
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
 db.sequelize
     .authenticate()
@@ -33,7 +37,7 @@ const options = {
             {
                 url: "http://localhost:3000"
             }
-        ],
+        ]
     },
     apis: ['./app/routes/*.js'], // files containing annotations as above
 };

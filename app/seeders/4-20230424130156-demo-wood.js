@@ -1,48 +1,50 @@
 'use strict';
 
 const type = require('../models/type');
+const {Type, Hardness} = require('../models')
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    const types = await queryInterface.findOne();
-    const hardness = await queryInterface.findAll();
+    const types = await Type.findAll({attributes: ['id']});
+    const hardnesses = await Hardness.findAll({attributes: ['id']});
+    
     
     await queryInterface.bulkInsert('Woods', [
       {
         name: "Épicéa",
-        typeId: 1,
-        hardnessId: 2
+        typeId: types[1].id,
+        hardnessId: hardnesses[0].id
       },
       {
         name: "Pin",
-        typeId: 1,
-        hardnessId: 2
+        typeId: types[0].id,
+        hardnessId: hardnesses[0].id
       },
       {
         name: "Padouk",
-        typeId: 2,
-        hardnessId: 2
+        typeId: types[0].id,
+        hardnessId: hardnesses[1].id
       },
       {
         name: "Érable",
-        typeId: 3,
-        hardnessId: 1
+        typeId: types[0].id,
+        hardnessId: hardnesses[2].id
       },
       {
         name: "Hêtre",
-        typeId: 3,
-        hardnessId: 2
+        typeId: types[2].id,
+        hardnessId: hardnesses[1].id
       },
       {
         name: "Itauba",
-        typeId: 2,
-        hardnessId: 2
+        typeId: types[1].id,
+        hardnessId: hardnesses[0].id
       },
       {
         name: "Douglas",
-        typeId: 1,
-        hardnessId: 1
+        typeId: types[1].id,
+        hardnessId: hardnesses[2].id
       }
     ], {});
   },
