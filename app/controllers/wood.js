@@ -10,12 +10,12 @@ exports.readAll = async (req, res) => {
                 {
                     model: Type,
                     as: 'type',
-                    attributes: [ 'id', 'name']
+                    attributes: ['id', 'name']
                 },
                 {
                     model: Hardness,
                     as: 'hardness',
-                    attributes: [ 'id', 'name']
+                    attributes: ['id', 'name']
                 }
             ]
         });
@@ -44,12 +44,12 @@ exports.findByHardness = async (req, res) => {
                 {
                     model: Type,
                     as: 'type',
-                    attributes: [ 'id', 'name']
+                    attributes: ['id', 'name']
                 },
                 {
                     model: Hardness,
                     as: 'hardness',
-                    attributes: [ 'id', 'name']
+                    attributes: ['id', 'name']
                 }
             ]
         });
@@ -62,7 +62,20 @@ exports.findByHardness = async (req, res) => {
 exports.findById = async (req, res) => {
     try {
         const wood = await Wood.findOne({
-            where: { id: req.params.id }
+            where: { id: req.params.id },
+            attributes: { exclude: ['typeId', 'hardnessId'] },
+            include: [
+                {
+                    model: Type,
+                    as: 'type',
+                    attributes: ['id', 'name']
+                },
+                {
+                    model: Hardness,
+                    as: 'hardness',
+                    attributes: ['id', 'name']
+                }
+            ]
         });
         if (wood) {
             res.status(200).json(wood);
